@@ -1,5 +1,5 @@
 import unittest
-from nlptools.stemming import porter, Rule
+from nlptools.stemming import porter, Rule, measure, pattern
 
 class StemmingTest(unittest.TestCase):
     def test_comput_equals_to_comput(self):
@@ -10,6 +10,24 @@ class StemmingTest(unittest.TestCase):
 
     def test_caresses_maps_to_caress(self):
         self.assertEqual(porter("caresses"), "caress")
+
+class MeasureTest(unittest.TestCase):
+    def test_measure_of_tree_equals_zero(self):
+        self.assertEqual(measure("tree"), 0)
+
+    def test_measure_of_trouble_equals_one(self):
+        self.assertEqual(measure("trouble"), 1)
+
+class PatternTest(unittest.TestCase):
+    def test_pattern_of_tree(self):
+        self.assertEqual(pattern("tree"), "CV")
+
+    def test_pattern_of_trouble(self):
+        self.assertEqual(pattern("trouble"), "CVCV")
+
+    def test_pattern_of_erlang(self):
+        self.assertEqual(pattern("erlang"), "VCVC")
+
 
 class RuleTest(unittest.TestCase):
     def test_a_word_that_doesnt_finish_with_ies(self):
