@@ -35,12 +35,11 @@ class SingleLetterRule:
         pass
 
     def match_length(self, word):
-        if len(word) > 1 and
-            word[-1] == word[-2] and not
-            word[-1] in ['l', 's', 'z']:
-            return 2
-        else:
-            return 0
+
+        if len(word) > 1:
+            if word[-1] == word[-2] and not (word[-1] in ['l', 's', 'z']):
+                return 2
+        return 0
 
     def apply(self, word):
         return word[:-1]
