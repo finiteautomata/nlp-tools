@@ -114,6 +114,8 @@ class StemmingTest(TestCase):
     def test_sized_to_size(self):
         self.assertEqual(porter("sized"), "size")
 
+    def test_hopping_to_hop(self):
+        self.assertEqual(porter("hopping"), "hop")
 
 if __name__ == '__main__':
     unittest.main()
