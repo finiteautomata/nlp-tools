@@ -77,8 +77,19 @@ class StemmingTest(unittest.TestCase):
     def test_feed_to_feed(self):
         self.assertEqual(porter("feed"), "feed")
 
-    def test_feed_to_feed(self):
+    def test_agreed_to_agree(self):
         self.assertEqual(porter("agreed"), "agree")
+
+    def test_plastered_to_plaster(self):
+        self.assertEqual(porter("plastered"), "plaster")
+
+    def test_bled_to_bled(self):
+        self.assertEqual(porter("bled"), "bled")
+
+    def test_motoring_to_motor(self):
+        self.assertEqual(porter("motoring"), "motor")
+    def test_sing_to_sing(self):
+        self.assertEqual(porter("sing"), "sing")
 
 if __name__ == '__main__':
     unittest.main()

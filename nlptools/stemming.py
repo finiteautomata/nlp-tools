@@ -94,8 +94,12 @@ def porter(word):
 
     stem = rules.apply(word)
 
+    has_vowel = lambda stem: 'V' in pattern(stem)[:-1]
     stem = SetOfRules([
-        Rule("eed", "ee", lambda stem: measure(stem) > 0)
+        Rule("eed", "ee", lambda stem: measure(stem) > 0),
+        # This shit of [:-1] is not trustable at all
+        Rule("ed", "", has_vowel),
+        Rule("ing", "", has_vowel)
     ]).apply(stem)
 
     return stem
