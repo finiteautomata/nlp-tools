@@ -2,16 +2,21 @@ import re
 import operator
 
 class Rule:
-    def __init__(self, suffix, replacement):
+    def __init__(self, suffix, replacement, condition=None):
         self.suffix = r"{}$".format(suffix)
         self.replacement = replacement
+        self.condition = condition or (lambda x: True)
 
     def match_length(self, word):
         match = re.search(self.suffix, word)
+
         if match:
-            return match.end() - match.start()
-        else:
-            return 0
+            # Match should always be a suffix
+            stem = word[:match.start()]
+            if self.condition(stem):
+                return match.end() - match.start()
+
+        return 0
 
     def __call__(self, word):
         return re.sub(self.suffix, self.replacement, word)
@@ -87,4 +92,10 @@ def porter(word):
         Rule("ss", "ss"),
         Rule("s", "")])
 
-    return rules.apply(word)
+    stem = rules.apply(word)
+
+    stem = SetOfRules([
+        Rule("eed", "ee", lambda stem: measure(stem) > 0)
+    ]).apply(stem)
+
+    return stem

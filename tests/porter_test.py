@@ -1,20 +1,9 @@
 import unittest
 from nlptools.stemming import porter, Rule, measure, pattern
 
-class StemmingTest(unittest.TestCase):
-    def test_comput_equals_to_comput(self):
-        self.assertEqual(porter("comput"), "comput")
-
-    def test_ponies_maps_to_poni(self):
-        self.assertEqual(porter("ponies"), "poni")
-
-    def test_caresses_maps_to_caress(self):
-        self.assertEqual(porter("caresses"), "caress")
-
 class MeasureTest(unittest.TestCase):
     def test_measure_of_tree_equals_zero(self):
         self.assertEqual(measure("tree"), 0)
-
 
     def test_measure_of_tr_equals_zero(self):
         self.assertEqual(measure("tr"), 0)
@@ -64,6 +53,32 @@ class RuleTest(unittest.TestCase):
 
         self.assertEqual(rule.match_length("flies"), 3)
 
+    def test_a_rule_with_condition_not_met(self):
+        rule = Rule("eed", "ee", lambda stem: False)
+
+        self.assertEqual(rule.match_length("feed"), 0)
+
+
+    def test_a_rule_with_condition_met(self):
+        rule = Rule("eed", "ee", lambda stem: True)
+
+        self.assertEqual(rule.match_length("agreed"), 3)
+
+class StemmingTest(unittest.TestCase):
+    def test_comput_equals_to_comput(self):
+        self.assertEqual(porter("comput"), "comput")
+
+    def test_ponies_maps_to_poni(self):
+        self.assertEqual(porter("ponies"), "poni")
+
+    def test_caresses_maps_to_caress(self):
+        self.assertEqual(porter("caresses"), "caress")
+
+    def test_feed_to_feed(self):
+        self.assertEqual(porter("feed"), "feed")
+
+    def test_feed_to_feed(self):
+        self.assertEqual(porter("agreed"), "agree")
 
 if __name__ == '__main__':
     unittest.main()
