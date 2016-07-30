@@ -41,7 +41,7 @@ def pattern(word):
     Returns an alternating sequence of V and C according to Porter's paper
 
     tree => "CV"
-
+    trouble => "CVCV"
     """
     pattern = ""
 
@@ -63,8 +63,21 @@ def pattern(word):
 
 
 def measure(word):
+    """
+    Returns the Porter's measure of a word.
+
+    If word has a pattern C?(VC){n}V? then measure(word) returns n
+    """
+
     if len(word) == 0:
         return 0
+
+    form = pattern(word)
+
+    if form[0] == "C" and form[-1] == "V":
+        return len(form) // 2 - 1
+    else:
+        return len(form) // 2
 
 
 def porter(word):

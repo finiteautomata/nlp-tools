@@ -15,8 +15,22 @@ class MeasureTest(unittest.TestCase):
     def test_measure_of_tree_equals_zero(self):
         self.assertEqual(measure("tree"), 0)
 
+
+    def test_measure_of_tr_equals_zero(self):
+        self.assertEqual(measure("tr"), 0)
+
     def test_measure_of_trouble_equals_one(self):
         self.assertEqual(measure("trouble"), 1)
+
+    def test_measure_of_oats(self):
+        self.assertEqual(measure("oats"), 1)
+
+    def test_measure_of_private(self):
+        self.assertEqual(measure("private"), 2)
+
+    def test_measure_of_privates(self):
+        self.assertEqual(measure("privates"), 3)
+
 
 class PatternTest(unittest.TestCase):
     def test_pattern_of_tree(self):
