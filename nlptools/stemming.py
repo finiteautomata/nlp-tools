@@ -30,6 +30,21 @@ class Rule:
 
         return stem
 
+class SingleLetterRule:
+    def __init__(self):
+        pass
+
+    def match_length(self, word):
+        if len(word) > 1 and
+            word[-1] == word[-2] and not
+            word[-1] in ['l', 's', 'z']:
+            return 2
+        else:
+            return 0
+
+    def apply(self, word):
+        return word[:-1]
+
 class SetOfRules:
     def __init__(self, rules):
         self.rules = rules
@@ -116,7 +131,8 @@ def porter(word):
     callback_rules = SetOfRules([
         Rule('at', 'ate'),
         Rule('bl', 'ble'),
-        Rule('iz', 'ize')
+        Rule('iz', 'ize'),
+        SingleLetterRule()
     ])
 
     has_vowel = lambda stem: 'V' in pattern(stem)[:-1]

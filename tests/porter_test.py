@@ -117,5 +117,8 @@ class StemmingTest(TestCase):
     def test_hopping_to_hop(self):
         self.assertEqual(porter("hopping"), "hop")
 
+    def test_falling_to_fall(self):
+        self.assertEqual(porter("falling"), "fall")
+
 if __name__ == '__main__':
     unittest.main()
