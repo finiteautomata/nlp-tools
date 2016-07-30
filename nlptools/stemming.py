@@ -1,11 +1,16 @@
 import re
 import operator
 
+class EmptyRule:
+    def apply(self, word):
+        return word
+
 class Rule:
-    def __init__(self, suffix, replacement, condition=None):
+    def __init__(self, suffix, replacement, condition=None, callback_rule=None):
         self.suffix = r"{}$".format(suffix)
         self.replacement = replacement
         self.condition = condition or (lambda x: True)
+        self.callback_rule = callback_rule or EmptyRule()
 
     def match_length(self, word):
         match = re.search(self.suffix, word)
@@ -18,8 +23,12 @@ class Rule:
 
         return 0
 
-    def __call__(self, word):
-        return re.sub(self.suffix, self.replacement, word)
+    def apply(self, word):
+        stem = re.sub(self.suffix, self.replacement, word)
+
+        stem = self.callback_rule.apply(stem)
+
+        return stem
 
 class SetOfRules:
     def __init__(self, rules):
@@ -37,7 +46,7 @@ class SetOfRules:
         best_rule = self.find_best_rule(word)
 
         if best_rule:
-            word = best_rule(word)
+            word = best_rule.apply(word)
 
         return word
 
@@ -86,6 +95,9 @@ def measure(word):
 
 
 def porter(word):
+    """
+    This is step 1a
+    """
     rules = SetOfRules([
         Rule("sses", "ss"),
         Rule("ies", "i"),
@@ -94,12 +106,27 @@ def porter(word):
 
     stem = rules.apply(word)
 
+    """
+    step 1b
+
+    callback_rules are the rules that are applied if second or third rules apply
+
+
+    """
+    callback_rules = SetOfRules([
+        Rule('at', 'ate'),
+        Rule('bl', 'ble'),
+        Rule('iz', 'ize')
+    ])
+
     has_vowel = lambda stem: 'V' in pattern(stem)[:-1]
-    stem = SetOfRules([
+    rules_1b = SetOfRules([
         Rule("eed", "ee", lambda stem: measure(stem) > 0),
         # This shit of [:-1] is not trustable at all
-        Rule("ed", "", has_vowel),
-        Rule("ing", "", has_vowel)
-    ]).apply(stem)
+        Rule("ed", "", has_vowel, callback_rules),
+        Rule("ing", "", has_vowel, callback_rules)
+    ])
+
+    stem = rules_1b.apply(stem)
 
     return stem

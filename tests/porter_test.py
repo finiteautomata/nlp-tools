@@ -1,7 +1,9 @@
-import unittest
+from unittest import TestCase
+from unittest.mock import MagicMock
 from nlptools.stemming import porter, Rule, measure, pattern
 
-class MeasureTest(unittest.TestCase):
+
+class MeasureTest(TestCase):
     def test_measure_of_tree_equals_zero(self):
         self.assertEqual(measure("tree"), 0)
 
@@ -21,7 +23,7 @@ class MeasureTest(unittest.TestCase):
         self.assertEqual(measure("privates"), 3)
 
 
-class PatternTest(unittest.TestCase):
+class PatternTest(TestCase):
     def test_pattern_of_tree(self):
         self.assertEqual(pattern("tree"), "CV")
 
@@ -32,16 +34,16 @@ class PatternTest(unittest.TestCase):
         self.assertEqual(pattern("erlang"), "VCVC")
 
 
-class RuleTest(unittest.TestCase):
+class RuleTest(TestCase):
     def test_a_word_that_doesnt_finish_with_ies(self):
         rule = Rule("ies", "i")
 
-        self.assertEqual(rule("foo"), "foo")
+        self.assertEqual(rule.apply("foo"), "foo")
 
     def test_a_word_that_finishes_with_ies(self):
         rule = Rule("ies", "i")
 
-        self.assertEqual(rule("flies"), "fli")
+        self.assertEqual(rule.apply("flies"), "fli")
 
     def test_match_length_for_a_non_matching_word(self):
         rule = Rule("ies", "i")
@@ -64,7 +66,18 @@ class RuleTest(unittest.TestCase):
 
         self.assertEqual(rule.match_length("agreed"), 3)
 
-class StemmingTest(unittest.TestCase):
+    def test_callback_is_called_when_condition_met(self):
+        callback = MagicMock()
+        callback.apply.return_value = "agree"
+
+        rule = Rule("eed", "ee", lambda stem: True, callback)
+
+        rule.apply("agreed")
+
+        # Callback should be called with the resulting stem
+        callback.apply.assert_called_with("agree")
+
+class StemmingTest(TestCase):
     def test_comput_equals_to_comput(self):
         self.assertEqual(porter("comput"), "comput")
 
@@ -88,8 +101,19 @@ class StemmingTest(unittest.TestCase):
 
     def test_motoring_to_motor(self):
         self.assertEqual(porter("motoring"), "motor")
+
     def test_sing_to_sing(self):
         self.assertEqual(porter("sing"), "sing")
+
+    def test_conflated_to_conflate(self):
+        self.assertEqual(porter("conflated"), "conflate")
+
+    def test_troubling_to_trouble(self):
+        self.assertEqual(porter("troubling"), "trouble")
+
+    def test_sized_to_size(self):
+        self.assertEqual(porter("sized"), "size")
+
 
 if __name__ == '__main__':
     unittest.main()
