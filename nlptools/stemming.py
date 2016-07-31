@@ -158,7 +158,29 @@ def porter(word):
         ]),
         # Step 1c
         SetOfRules([Rule("y", "i", has_vowel)]),
-
+        # Step 2
+        SetOfRules([
+            Rule("ational", "ate", non_zero_measure),
+            Rule("tional", "tion", non_zero_measure),
+            Rule("enci", "ence", non_zero_measure),
+            Rule("anci", "ance", non_zero_measure),
+            Rule("izer", "ize", non_zero_measure),
+            Rule("abli", "able", non_zero_measure),
+            Rule("alli", "al", non_zero_measure),
+            Rule("entli", "ent", non_zero_measure),
+            Rule("eli", "e", non_zero_measure),
+            Rule("ousli", "ous", non_zero_measure),
+            Rule("ization", "ize", non_zero_measure),
+            Rule("ation", "ate", non_zero_measure),
+            Rule("ator", "ate", non_zero_measure),
+            Rule("alism", "al", non_zero_measure),
+            Rule("iveness", "ive", non_zero_measure),
+            Rule("fulness", "ful", non_zero_measure),
+            Rule("ousness", "ous", non_zero_measure),
+            Rule("aliti", "al", non_zero_measure),
+            Rule("iviti", "ive", non_zero_measure),
+            Rule("biliti", "ble", non_zero_measure),
+        ])
     ]
 
     stem = word
