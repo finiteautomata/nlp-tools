@@ -161,4 +161,7 @@ def porter(word):
 
     stem = rules_1b.apply(stem)
 
+    rules_1c = SetOfRules([Rule("y", "i", has_vowel)])
+
+    stem = rules_1c.apply(stem)
     return stem

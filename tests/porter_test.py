@@ -126,5 +126,11 @@ class StemmingTest(TestCase):
     def test_filing_to_file(self):
         self.assertEqual(porter("filing"), "file")
 
+    def test_happy_to_happi(self):
+        self.assertEqual(porter("happy"), "happi")
+
+    def test_sky_to_sky(self):
+        self.assertEqual(porter("sky"), "sky")
+
 if __name__ == '__main__':
     unittest.main()
