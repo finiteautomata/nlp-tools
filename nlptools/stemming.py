@@ -133,7 +133,7 @@ def porter(word):
     callback_rules are the rules that are applied if second or third rules apply
     """
     has_vowel = lambda stem: 'V' in pattern(stem)[:-1]
-
+    non_zero_measure = lambda stem: measure(stem) > 0
     callback_rules = SetOfRules([
         Rule('at', 'ate'),
         Rule('bl', 'ble'),
@@ -142,19 +142,23 @@ def porter(word):
         AddERule()
     ])
 
-    steps = [ SetOfRules([
+    steps = [
+        # Step 1a
+        SetOfRules([
             Rule("sses", "ss"),
             Rule("ies", "i"),
             Rule("ss", "ss"),
             Rule("s", "")]),
+        # Step 1b
         SetOfRules([
-            Rule("eed", "ee", lambda stem: measure(stem) > 0),
+            Rule("eed", "ee", non_zero_measure),
             # This shit of [:-1] is not trustable at all
             Rule("ed", "", has_vowel, callback_rules),
             Rule("ing", "", has_vowel, callback_rules)
         ]),
+        # Step 1c
+        SetOfRules([Rule("y", "i", has_vowel)]),
 
-        SetOfRules([Rule("y", "i", has_vowel)])
     ]
 
     stem = word

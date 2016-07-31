@@ -78,59 +78,43 @@ class RuleTest(TestCase):
         callback.apply.assert_called_with("agree")
 
 class StemmingTest(TestCase):
-    def test_comput_equals_to_comput(self):
-        self.assertEqual(porter("comput"), "comput")
+    pass
 
-    def test_ponies_maps_to_poni(self):
-        self.assertEqual(porter("ponies"), "poni")
+"""
 
-    def test_caresses_maps_to_caress(self):
-        self.assertEqual(porter("caresses"), "caress")
+All the test cases are dynamically generated here
 
-    def test_feed_to_feed(self):
-        self.assertEqual(porter("feed"), "feed")
+"""
+cases = {
+    'comput': "comput",
+    'ponies': "poni",
+    'caresses': "caress",
+    'feed': "feed",
+    'agreed': "agree",
+    'plastered': "plaster",
+    'bled': "bled",
+    'motoring': "motor",
+    'sing': "sing",
+    'conflated': "conflate",
+    'troubling': "trouble",
+    'sized': "size",
+    'hopping': "hop",
+    'falling': "fall",
+    'falling': "fall",
+    'filing': "file",
+    'happy': "happi",
+}
 
-    def test_agreed_to_agree(self):
-        self.assertEqual(porter("agreed"), "agree")
+def create_test_case(klass, word, stem):
+    def test_case(self):
+        self.assertEqual(porter(word), stem)
 
-    def test_plastered_to_plaster(self):
-        self.assertEqual(porter("plastered"), "plaster")
+    test_name = "test_{}_to_{}".format(word, stem)
 
-    def test_bled_to_bled(self):
-        self.assertEqual(porter("bled"), "bled")
+    setattr(klass, test_name, test_case)
 
-    def test_motoring_to_motor(self):
-        self.assertEqual(porter("motoring"), "motor")
-
-    def test_sing_to_sing(self):
-        self.assertEqual(porter("sing"), "sing")
-
-    def test_conflated_to_conflate(self):
-        self.assertEqual(porter("conflated"), "conflate")
-
-    def test_troubling_to_trouble(self):
-        self.assertEqual(porter("troubling"), "trouble")
-
-    def test_sized_to_size(self):
-        self.assertEqual(porter("sized"), "size")
-
-    def test_hopping_to_hop(self):
-        self.assertEqual(porter("hopping"), "hop")
-
-    def test_falling_to_fall(self):
-        self.assertEqual(porter("falling"), "fall")
-
-    def test_falling_to_fall(self):
-        self.assertEqual(porter("falling"), "fall")
-
-    def test_filing_to_file(self):
-        self.assertEqual(porter("filing"), "file")
-
-    def test_happy_to_happi(self):
-        self.assertEqual(porter("happy"), "happi")
-
-    def test_sky_to_sky(self):
-        self.assertEqual(porter("sky"), "sky")
+for (word, stem) in cases.items():
+    create_test_case(StemmingTest, word, stem)
 
 if __name__ == '__main__':
     unittest.main()
