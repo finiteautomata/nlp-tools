@@ -120,5 +120,11 @@ class StemmingTest(TestCase):
     def test_falling_to_fall(self):
         self.assertEqual(porter("falling"), "fall")
 
+    def test_falling_to_fall(self):
+        self.assertEqual(porter("falling"), "fall")
+
+    def test_filing_to_file(self):
+        self.assertEqual(porter("filing"), "file")
+
 if __name__ == '__main__':
     unittest.main()

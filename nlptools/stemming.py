@@ -35,7 +35,6 @@ class SingleLetterRule:
         pass
 
     def match_length(self, word):
-
         if len(word) > 1:
             if word[-1] == word[-2] and not (word[-1] in ['l', 's', 'z']):
                 return 2
@@ -44,7 +43,22 @@ class SingleLetterRule:
     def apply(self, word):
         return word[:-1]
 
+class AddERule:
+    def match_length(self, word):
+        if pattern(word) == "CVC" and word[-1] not in ['w', 'x', 'y']:
+            return 1
+        return 0
+
+    def apply(self, word):
+        return word + 'e'
+
 class SetOfRules:
+    """
+    This is a composite rule, in the sense of a GOF's Composite Pattern
+
+    When applying this composite rule, it will apply the rule (if exists) with
+    the longest matching subsequence.
+    """
     def __init__(self, rules):
         self.rules = rules
 
@@ -57,6 +71,9 @@ class SetOfRules:
             return self.rules[best_match_index]
 
     def apply(self, word):
+        """
+        Applies the rule with the longest matching subsequence.
+        """
         best_rule = self.find_best_rule(word)
 
         if best_rule:
@@ -124,17 +141,17 @@ def porter(word):
     step 1b
 
     callback_rules are the rules that are applied if second or third rules apply
-
-
     """
+    has_vowel = lambda stem: 'V' in pattern(stem)[:-1]
+
     callback_rules = SetOfRules([
         Rule('at', 'ate'),
         Rule('bl', 'ble'),
         Rule('iz', 'ize'),
-        SingleLetterRule()
+        SingleLetterRule(),
+        AddERule()
     ])
 
-    has_vowel = lambda stem: 'V' in pattern(stem)[:-1]
     rules_1b = SetOfRules([
         Rule("eed", "ee", lambda stem: measure(stem) > 0),
         # This shit of [:-1] is not trustable at all
