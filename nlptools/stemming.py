@@ -126,16 +126,6 @@ def measure(word):
 
 
 def porter(word):
-    """
-    This is step 1a
-    """
-    rules = SetOfRules([
-        Rule("sses", "ss"),
-        Rule("ies", "i"),
-        Rule("ss", "ss"),
-        Rule("s", "")])
-
-    stem = rules.apply(word)
 
     """
     step 1b
@@ -152,16 +142,24 @@ def porter(word):
         AddERule()
     ])
 
-    rules_1b = SetOfRules([
-        Rule("eed", "ee", lambda stem: measure(stem) > 0),
-        # This shit of [:-1] is not trustable at all
-        Rule("ed", "", has_vowel, callback_rules),
-        Rule("ing", "", has_vowel, callback_rules)
-    ])
+    steps = [ SetOfRules([
+            Rule("sses", "ss"),
+            Rule("ies", "i"),
+            Rule("ss", "ss"),
+            Rule("s", "")]),
+        SetOfRules([
+            Rule("eed", "ee", lambda stem: measure(stem) > 0),
+            # This shit of [:-1] is not trustable at all
+            Rule("ed", "", has_vowel, callback_rules),
+            Rule("ing", "", has_vowel, callback_rules)
+        ]),
 
-    stem = rules_1b.apply(stem)
+        SetOfRules([Rule("y", "i", has_vowel)])
+    ]
 
-    rules_1c = SetOfRules([Rule("y", "i", has_vowel)])
+    stem = word
 
-    stem = rules_1c.apply(stem)
+    for step in steps:
+        stem = step.apply(stem)
+
     return stem
