@@ -90,12 +90,12 @@ cases = {
     'ponies': 'poni',
     'caresses': 'caress',
     'feed': 'feed',
-    'agreed': 'agree',
+    'agreed': 'agre',
     'plastered': 'plaster',
     'bled': 'bled',
     'motoring': 'motor',
     'sing': 'sing',
-    'conflated': 'conflate',
+    'conflated': 'conflat',
     'troubling': 'trouble',
     'sized': 'size',
     'hopping': 'hop',
@@ -103,10 +103,10 @@ cases = {
     'falling': 'fall',
     'filing': 'file',
     'happy': 'happi',
-    'relational': 'relate',
+    'relational': 'relat',
     'conditional': 'condit',
     'rational': 'ration',
-    'valenci': 'valence',
+    'valency': 'valenc',
     'hesitance': 'hesit',
     'digitizer': 'digit',
     'conformabli': 'conform',
@@ -123,7 +123,7 @@ cases = {
     'callousness': 'callous',
     'formality': 'formal',
     'sensitivity': 'sensit',
-    'sensibility': 'sensible',
+    'sensibility': 'sensibl',
     'triplicate': 'triplic',
     'formative': 'form',
     'formalize': 'formal',
@@ -148,7 +148,10 @@ cases = {
     'angularity': 'angular',
     'analogous': 'analog',
     'effective': 'effect',
-    'mesmerize': 'mesmer'
+    'mesmerize': 'mesmer',
+    'probate': 'probat',
+    'controll': 'control',
+    'roll': 'roll'
 }
 
 def create_test_case(klass, word, stem):

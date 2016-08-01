@@ -43,14 +43,26 @@ class SingleLetterRule:
     def apply(self, word):
         return word[:-1]
 
+def is_cvc(word):
+    return pattern(word)[-3:] == "CVC" and word[-1] not in ['w', 'x', 'y']
+
 class AddERule:
     def match_length(self, word):
-        if pattern(word) == "CVC" and word[-1] not in ['w', 'x', 'y']:
+        if measure(word) == 1 and is_cvc(word):
             return 1
         return 0
 
     def apply(self, word):
         return word + 'e'
+
+class RemoveLRule:
+    def match_length(self, word):
+        if measure(word) > 1 and word[-1] == word[-2] == 'l':
+            return 1
+        return 0
+
+    def apply(self, word):
+        return word[:-1]
 
 class SetOfRules:
     """
@@ -216,6 +228,15 @@ def porter(word):
             Rule("ous", "", measure_greater_one),
             Rule("ize", "", measure_greater_one),
         ]),
+        # Step 5a
+        SetOfRules([
+            Rule("e", "", measure_greater_one),
+            Rule("e", "", lambda w: measure(w) == 1 and not is_cvc(w))
+        ]),
+        # Step 5b
+        SetOfRules([
+            RemoveLRule()
+        ])
     ]
 
     stem = word
