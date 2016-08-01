@@ -1,6 +1,12 @@
 import re
 import operator
 
+def is_cvc(word):
+    return pattern(word)[-3:] == "CVC" and word[-1] not in ['w', 'x', 'y']
+
+def same_last_letters(word):
+    return len(word) >= 2 and word[-1] == word[-2]
+
 class EmptyRule:
     def apply(self, word):
         return word
@@ -35,20 +41,17 @@ class SingleLetterRule:
         pass
 
     def match_length(self, word):
-        if len(word) > 1:
-            if word[-1] == word[-2] and not (word[-1] in ['l', 's', 'z']):
-                return 2
+        if same_last_letters(word) and not (word[-1] in ['l', 's', 'z']):
+            return 2
         return 0
 
     def apply(self, word):
         return word[:-1]
 
-def is_cvc(word):
-    return pattern(word)[-3:] == "CVC" and word[-1] not in ['w', 'x', 'y']
 
 class AddERule:
     def match_length(self, word):
-        if measure(word) == 1 and is_cvc(word):
+        if measure(word) == 1 and not same_last_letters(word) and is_cvc(word):
             return 1
         return 0
 
