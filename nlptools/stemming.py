@@ -180,6 +180,16 @@ def porter(word):
             Rule("aliti", "al", non_zero_measure),
             Rule("iviti", "ive", non_zero_measure),
             Rule("biliti", "ble", non_zero_measure),
+        ]),
+        # Step 3
+        SetOfRules([
+            Rule("icate", "ic", non_zero_measure),
+            Rule("ative", "", non_zero_measure),
+            Rule("alize", "al", non_zero_measure),
+            Rule("iciti", "ic", non_zero_measure),
+            Rule("ical", "ic", non_zero_measure),
+            Rule("ful", "", non_zero_measure),
+            Rule("ness", "", non_zero_measure),
         ])
     ]
 
