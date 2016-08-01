@@ -60,7 +60,7 @@ class AddERule:
 
 class RemoveLRule:
     def match_length(self, word):
-        if measure(word) > 1 and word[-1] == word[-2] == 'l':
+        if measure(word) > 1 and same_last_letters(word) and word[-1] == 'l':
             return 1
         return 0
 
