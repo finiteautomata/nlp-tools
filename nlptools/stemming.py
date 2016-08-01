@@ -133,7 +133,9 @@ def porter(word):
     callback_rules are the rules that are applied if second or third rules apply
     """
     has_vowel = lambda stem: 'V' in pattern(stem)[:-1]
+    measure_greater_one = lambda stem: measure(stem) > 1
     non_zero_measure = lambda stem: measure(stem) > 0
+
     callback_rules = SetOfRules([
         Rule('at', 'ate'),
         Rule('bl', 'ble'),
@@ -190,7 +192,30 @@ def porter(word):
             Rule("ical", "ic", non_zero_measure),
             Rule("ful", "", non_zero_measure),
             Rule("ness", "", non_zero_measure),
-        ])
+        ]),
+        # Step 4
+        SetOfRules([
+            Rule("al", "", measure_greater_one),
+            Rule("ance", "", measure_greater_one),
+            Rule("ence", "", measure_greater_one),
+            Rule("er", "", measure_greater_one),
+            Rule("ic", "", measure_greater_one),
+            Rule("able", "", measure_greater_one),
+            Rule("ant", "", measure_greater_one),
+            Rule("ement", "", measure_greater_one),
+            Rule("ment", "", measure_greater_one),
+            Rule("ent", "", measure_greater_one),
+            Rule("ible", "", measure_greater_one),
+            Rule("ion", "", lambda stem: stem[-1] in ['s', 't'] and measure_greater_one(stem)),
+            Rule("ou", "", measure_greater_one),
+            Rule("ism", "", measure_greater_one),
+            Rule("ate", "", measure_greater_one),
+            Rule("iti", "", measure_greater_one),
+            Rule("ous", "", measure_greater_one),
+            Rule("ive", "", measure_greater_one),
+            Rule("ous", "", measure_greater_one),
+            Rule("ize", "", measure_greater_one),
+        ]),
     ]
 
     stem = word
